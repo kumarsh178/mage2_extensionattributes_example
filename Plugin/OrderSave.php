@@ -16,7 +16,7 @@ class OrderSave
 
     public function afterSave(
         \Magento\Sales\Api\OrderRepositoryInterface $subject,
-        \Magento\Sales\Api\Data\OrderInterfacee $resultOrder
+        \Magento\Sales\Api\Data\OrderInterface $resultOrder
     ) {
         $resultOrder = $this->saveFoomanAttribute($resultOrder);
 
@@ -25,15 +25,18 @@ class OrderSave
 
     private function saveFoomanAttribute(\Magento\Sales\Api\Data\OrderInterface $order)
     {
-        $extensionAttribute = $order->getExtensionAttributes();
+        $extensionAttributes = $order->getExtensionAttributes();
 
+        var_dump($extensionAttributes->getFoomanAttribute());
         if(null !== $extensionAttributes && null !== $extensionAttributes->getFoomanAttribute())
         {
             $foomanAttributeValue = $extensionAttributes->getFoomanAttribute()->getValue();
+            $foomanAttributeValue = '123';//json_encode($foomanAttributeValue) . '-1';
             try{
                 $fooman = $this->foomanFactory->create();
                 $fooman->setData('order_id', $order->getEntityId());
                 $fooman->setData('value', $foomanAttributeValue);
+                $fooman->save();
             }
             catch(\Exception $e)
             {

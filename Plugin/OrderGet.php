@@ -43,8 +43,10 @@ class OrderGet
         //}
 
         try {
-            $fooman = $this->foomanCollectionFactory->create()->addFieldToFilter('order_id', array('eq', $order->getEntityId()));
+            $fooman = $this->foomanCollectionFactory->create()->addFieldToFilter('order_id', array('eq', $order->getEntityId()))->getFirstItem();
             $foomanAttributeValue = $fooman->getData('value');
+            echo 'I am called';
+            //var_dump($foomanAttributeValue);
         }
         catch(\Exception $e){
             return $order;

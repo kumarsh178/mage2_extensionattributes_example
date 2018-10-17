@@ -26,40 +26,12 @@ class Index extends \Magento\Framework\App\Action\Action
     
     public function execute()
     {
-        $id = 1;
-        $order = $this->orderRepository->get($id);
-        
-        echo $order->getData('customer_email');
-        echo '<br/> '. $order->getData('grand_total') . '<br />';
+        //return $this->resultPageFactory->create();
+        $order = $this->orderRepository->get(29);
 
-        $extensionAttributes = $order->getExtensionAttributes();
-        //$orderExtension = $extensionAttributes ? $extensionAttributes
-        //save extension_attribute for order #1
-        $order = $this->orderRepository->get(5);
-        $order_id = $order->getData('entity_id');
-        $value = 'order'. $order_id . ' additional value.';
-        $fooman = $this->foomanFactory->create();
-        $fooman->setData('value', $value);
-        $fooman->setData('order_id', $order_id);
-        $fooman->save();
-        $extensionAttributes->setFoomanAttribute($fooman);
-        
-
-        //get extension_attribute for order #5
-        $foomanAttribute = $extensionAttributes->getFoomanAttribute();
-        $result = $foomanAttribute->getData('value');
-        var_dump($result);
-        //$result = $result[0];
-        //print($result['value']);
-
-       // echo 'fooman list:';
-
-        /*
-        $collection = $this->foomanCollectionFactory->create();
-
-        foreach($collection as $item) {
-            echo $item->getData('value'). '<br />'; 
-        }
-        */
+        $order->setShippingAmount(number_format(9.00, 2));
+        $order->setBaseShippingAmount(number_format(9.00,2));
+        $this->orderRepository->save($order);
+        var_dump($order->getData());
     }
 }
